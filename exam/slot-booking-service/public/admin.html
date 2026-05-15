@@ -92,6 +92,14 @@
     }
     .q-card .input { padding: 9px 12px; font-size: 14px; }
     .q-card label { font-size: 11px; color: var(--text-mute); margin-bottom: -3px; }
+    .q-select {
+      padding: 6px 8px; font-size: 12px; font-family: var(--font-mono);
+      background: var(--bg-soft); color: var(--text);
+      border: 1px solid var(--line); border-radius: 6px;
+      cursor: pointer; outline: none;
+    }
+    .q-select:focus { border-color: var(--accent); }
+    .q-select option:disabled { color: var(--text-mute); }
   </style>
 </head>
 <body>
@@ -298,14 +306,25 @@
           const tagText = b.type === 'upgrade' ? 'upgrade · 40m' : 'defend · 20m';
           const created = b.created_at ? new Date(b.created_at).toLocaleString() : '—';
           const qi = b.queue ?? 0;
-          const interviewer = (queues[qi] && queues[qi].interviewer) || '';
-          const queueLabel = interviewer
-            ? `Q${qi + 1} · ${escapeHtml(interviewer)}`
-            : `Q${qi + 1}`;
+
+          // Disable queues whose cells are taken by a DIFFERENT booking
+          const opts = [];
+          for (let q = 0; q < QUEUES; q++) {
+            let blocked = false;
+            if (q !== qi) {
+              for (let i = 0; i < b.duration; i++) {
+                const occupant = grid[q][b.start + i];
+                if (occupant && occupant.id !== b.id) { blocked = true; break; }
+              }
+            }
+            const label = `Q${q + 1}${queues[q] && queues[q].interviewer ? ' · ' + queues[q].interviewer : ''}`;
+            opts.push(`<option value="${q}"${q === qi ? ' selected' : ''}${blocked ? ' disabled' : ''}>${escapeHtml(label)}${blocked ? ' (busy)' : ''}</option>`);
+          }
+
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td class="mono">${fmtRange(b.start, b.duration)}</td>
-            <td><span class="sched-tag" style="font-size:11px">${queueLabel}</span></td>
+            <td><select class="q-select" data-id="${escapeHtml(b.id)}">${opts.join('')}</select></td>
             <td>${escapeHtml(b.name)}</td>
             <td><span class="sched-tag ${tagClass}">${tagText}</span></td>
             <td class="mono" style="color:var(--text-mute);font-size:12px">${escapeHtml(created)}</td>
@@ -338,6 +357,9 @@
       tbody.querySelectorAll('.del-btn').forEach(btn => {
         btn.addEventListener('click', () => del(btn.dataset.id));
       });
+      tbody.querySelectorAll('.q-select').forEach(sel => {
+        sel.addEventListener('change', () => move(sel.dataset.id, Number(sel.value)));
+      });
     }
 
     async function del(id) {
@@ -350,6 +372,20 @@
         const data = await r.json().catch(() => ({}));
         $('#error').textContent = data.error || 'Delete failed.';
         return;
+      }
+      load();
+    }
+
+    async function move(id, queue) {
+      $('#error').textContent = '';
+      const r = await fetch('/api/admin/bookings/' + encodeURIComponent(id), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Token': token },
+        body: JSON.stringify({ queue })
+      });
+      if (!r.ok) {
+        const data = await r.json().catch(() => ({}));
+        $('#error').textContent = data.error || 'Move failed.';
       }
       load();
     }

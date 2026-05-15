@@ -72,15 +72,19 @@
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-body">
-          <div class="label-row">
-            <span class="label">Pick a queue and time</span>
+          <span class="label">Interviewers</span>
+          <p class="hint">You'll be randomly assigned to one of these when you book. After booking, your assigned interviewer and Zoom link appear in your confirmation.</p>
+          <div id="queue-info" class="queue-info"></div>
+
+          <div class="label-row" style="margin-top:22px">
+            <span class="label">Pick a time</span>
             <span class="picks-counter" id="picks-counter">Nothing selected</span>
           </div>
-          <div id="queue-grid" class="queue-grid"></div>
+          <div id="time-grid" class="time-grid"></div>
           <div class="legend">
             <span class="legend-item"><span class="sw sw-free"></span>Available</span>
             <span class="legend-item"><span class="sw sw-pick"></span>Your pick</span>
-            <span class="legend-item"><span class="sw sw-taken"></span>Taken</span>
+            <span class="legend-item"><span class="sw sw-taken"></span>Full</span>
           </div>
         </div>
       </div>

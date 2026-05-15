@@ -1,21 +1,22 @@
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
+const QUEUES_COUNT = 3;
+
 const state = {
   name: '',
   type: 'defend',           // 'defend' = 1 cell (20m), 'upgrade' = 2 cells (40m)
-  pick: null,               // { queue, start } or null
+  pick: null,               // start cell index or null
   baseSlots: [],
   queues: [],               // [{interviewer, zoom}, ...]
   bookings: [],
 };
 
-const QUEUES_COUNT = 3;
-
 const els = {
   name: $('#name'),
   typeCards: $$('.type-card'),
-  queueGrid: $('#queue-grid'),
+  queueInfo: $('#queue-info'),
+  timeGrid: $('#time-grid'),
   schedule: $('#schedule'),
   submit: $('#submit'),
   status: $('#status'),
@@ -27,13 +28,17 @@ function durationCells() {
   return state.type === 'upgrade' ? 2 : 1;
 }
 
+function startStep() {
+  return state.type === 'upgrade' ? 2 : 1;
+}
+
 function rangeLabel(startIdx, dur) {
   const a = state.baseSlots[startIdx];
   const b = state.baseSlots[startIdx + dur - 1];
   return a && b ? `${a.start} – ${b.end}` : '';
 }
 
-// grid[queue][cell] = booking holding that cell, or null
+// grid[queue][cell] = booking or null
 function buildGrid() {
   const grid = Array.from({ length: QUEUES_COUNT }, () =>
     new Array(state.baseSlots.length).fill(null)
@@ -48,9 +53,18 @@ function buildGrid() {
   return grid;
 }
 
-// Aligned 40-min blocks start at even cells (0, 2, 4, 6, 8, 10)
-function startStep() {
-  return state.type === 'upgrade' ? 2 : 1;
+// How many queues are free across the cell range [start, start+dur)
+function freeQueuesAt(startIdx, grid) {
+  const dur = durationCells();
+  let n = 0;
+  for (let q = 0; q < QUEUES_COUNT; q++) {
+    let free = true;
+    for (let i = 0; i < dur; i++) {
+      if (grid[q][startIdx + i]) { free = false; break; }
+    }
+    if (free) n++;
+  }
+  return n;
 }
 
 function escapeHtml(s) {
@@ -67,102 +81,77 @@ function safeUrl(raw) {
   return 'https://' + s.replace(/^\/+/, '');
 }
 
-function renderQueueHeader(qi) {
-  const q = state.queues[qi] || { interviewer: '', zoom: '' };
-  const nameHtml = q.interviewer
-    ? `<span class="queue-name">${escapeHtml(q.interviewer)}</span>`
-    : `<span class="queue-name tbd">Interviewer · TBD</span>`;
-  const zoomUrl = safeUrl(q.zoom);
-  const zoomHtml = zoomUrl
-    ? `<a class="queue-zoom" href="${escapeHtml(zoomUrl)}" target="_blank" rel="noopener">
-         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l5-3v10l-5-3"/><rect x="2" y="6" width="13" height="12" rx="2"/></svg>
-         Join Zoom
-       </a>`
-    : `<span class="queue-zoom muted">Zoom link · TBD</span>`;
-  return `
-    <div class="queue-head">
-      <div class="queue-title">
-        <span class="queue-num">Queue ${qi + 1}</span>
-      </div>
+function renderQueueInfo() {
+  els.queueInfo.innerHTML = '';
+  for (let qi = 0; qi < QUEUES_COUNT; qi++) {
+    const q = state.queues[qi] || { interviewer: '', zoom: '' };
+    const nameHtml = q.interviewer
+      ? `<span class="queue-name">${escapeHtml(q.interviewer)}</span>`
+      : `<span class="queue-name tbd">Interviewer · TBD</span>`;
+    const zoomUrl = safeUrl(q.zoom);
+    const zoomHtml = zoomUrl
+      ? `<a class="queue-zoom" href="${escapeHtml(zoomUrl)}" target="_blank" rel="noopener">
+           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 10l5-3v10l-5-3"/><rect x="2" y="6" width="13" height="12" rx="2"/></svg>
+           Zoom link
+         </a>`
+      : `<span class="queue-zoom muted">Zoom link · TBD</span>`;
+    const card = document.createElement('div');
+    card.className = 'queue-card';
+    card.innerHTML = `
+      <span class="queue-num">Queue ${qi + 1}</span>
       ${nameHtml}
       ${zoomHtml}
-    </div>
-  `;
+    `;
+    els.queueInfo.appendChild(card);
+  }
 }
 
-function renderQueues() {
+function renderTimeGrid() {
   const dur = durationCells();
   const step = startStep();
   const grid = buildGrid();
   const total = state.baseSlots.length;
 
-  els.queueGrid.innerHTML = '';
+  els.timeGrid.innerHTML = '';
 
-  for (let qi = 0; qi < QUEUES_COUNT; qi++) {
-    const col = document.createElement('div');
-    col.className = 'queue-col';
-    col.innerHTML = renderQueueHeader(qi);
+  for (let s = 0; s + dur <= total; s += step) {
+    const isPicked = state.pick === s;
+    const freeQ = freeQueuesAt(s, grid);
+    const taken = freeQ === 0;
+    const st = isPicked ? 'picked' : (taken ? 'taken' : 'free');
 
-    const cellsWrap = document.createElement('div');
-    cellsWrap.className = 'queue-cells';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'slot';
+    btn.dataset.state = st;
+    btn.dataset.start = String(s);
+    if (st === 'taken') btn.disabled = true;
 
-    for (let s = 0; s + dur <= total; s += step) {
-      const isPicked = state.pick && state.pick.queue === qi && state.pick.start === s;
-      let taken = false;
-      for (let i = 0; i < dur; i++) {
-        if (grid[qi][s + i]) { taken = true; break; }
-      }
+    const time = document.createElement('div');
+    time.className = 'slot-time';
+    time.textContent = rangeLabel(s, dur);
 
-      const st = isPicked ? 'picked' : (taken ? 'taken' : 'free');
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'slot';
-      btn.dataset.state = st;
-      btn.dataset.queue = String(qi);
-      btn.dataset.start = String(s);
-      if (st === 'taken') btn.disabled = true;
+    const meta = document.createElement('div');
+    meta.className = 'slot-meta';
+    if (isPicked) meta.textContent = 'Selected';
+    else if (taken) meta.textContent = 'Full';
+    else meta.textContent = `${freeQ} of ${QUEUES_COUNT} queues free`;
 
-      const time = document.createElement('div');
-      time.className = 'slot-time';
-      time.textContent = rangeLabel(s, dur);
-
-      const meta = document.createElement('div');
-      meta.className = 'slot-meta';
-      if (isPicked) {
-        meta.textContent = 'Selected';
-      } else if (taken) {
-        const occupant = grid[qi][s] || grid[qi][s + 1];
-        meta.textContent = occupant ? `${occupant.name}` : 'Taken';
-      } else {
-        meta.textContent = `${dur * 20} min`;
-      }
-
-      btn.appendChild(time);
-      btn.appendChild(meta);
-      btn.addEventListener('click', () => onSlotClick(qi, s));
-      cellsWrap.appendChild(btn);
-    }
-
-    col.appendChild(cellsWrap);
-    els.queueGrid.appendChild(col);
+    btn.appendChild(time);
+    btn.appendChild(meta);
+    btn.addEventListener('click', () => onSlotClick(s));
+    els.timeGrid.appendChild(btn);
   }
 
-  if (state.pick) {
-    const dur = durationCells();
-    els.picksCounter.textContent = `Queue ${state.pick.queue + 1} · ${rangeLabel(state.pick.start, dur)}`;
-  } else {
-    els.picksCounter.textContent = 'Nothing selected';
-  }
+  els.picksCounter.textContent = state.pick === null
+    ? 'Nothing selected'
+    : `Selected ${rangeLabel(state.pick, dur)}`;
   updateSubmit();
 }
 
-function onSlotClick(queue, start) {
-  if (state.pick && state.pick.queue === queue && state.pick.start === start) {
-    state.pick = null;
-  } else {
-    state.pick = { queue, start };
-  }
-  renderQueues();
+function onSlotClick(start) {
+  state.pick = state.pick === start ? null : start;
+  renderTimeGrid();
 }
 
 function setType(newType) {
@@ -170,7 +159,7 @@ function setType(newType) {
   state.type = newType;
   state.pick = null;
   els.typeCards.forEach(c => c.setAttribute('aria-checked', String(c.dataset.type === newType)));
-  renderQueues();
+  renderTimeGrid();
 }
 
 function updateSubmit() {
@@ -179,7 +168,7 @@ function updateSubmit() {
 }
 
 function setStatus(msg, kind) {
-  els.status.textContent = msg || '';
+  els.status.innerHTML = msg || '';
   els.status.className = 'status' + (kind ? ' ' + kind : '');
 }
 
@@ -189,16 +178,11 @@ function renderSchedule() {
   const total = state.baseSlots.length;
 
   for (let cell = 0; cell < total; cell++) {
-    // Aggregate bookings starting exactly at this cell across all queues
     const rowBookings = [];
     for (let qi = 0; qi < QUEUES_COUNT; qi++) {
       const b = grid[qi][cell];
-      if (b && b.start === cell && b.queue === qi) {
-        rowBookings.push({ qi, b });
-      }
+      if (b && b.start === cell && b.queue === qi) rowBookings.push({ qi, b });
     }
-
-    // Detect cells fully empty (no booking covers this cell in any queue)
     let anyCovered = false;
     for (let qi = 0; qi < QUEUES_COUNT; qi++) {
       if (grid[qi][cell]) { anyCovered = true; break; }
@@ -240,19 +224,17 @@ async function loadState() {
     state.bookings = data.bookings || [];
 
     // Drop pick if it has become invalid
-    if (state.pick) {
-      const grid = buildGrid();
-      const dur = durationCells();
-      let invalid = state.pick.start + dur > state.baseSlots.length;
-      if (!invalid) {
-        for (let i = 0; i < dur; i++) {
-          if (grid[state.pick.queue][state.pick.start + i]) { invalid = true; break; }
-        }
+    if (state.pick !== null) {
+      if (state.pick + durationCells() > state.baseSlots.length) {
+        state.pick = null;
+      } else {
+        const grid = buildGrid();
+        if (freeQueuesAt(state.pick, grid) === 0) state.pick = null;
       }
-      if (invalid) state.pick = null;
     }
 
-    renderQueues();
+    renderQueueInfo();
+    renderTimeGrid();
     renderSchedule();
   } catch (e) {
     setStatus('Could not load schedule. Check your connection.', 'error');
@@ -266,8 +248,8 @@ async function submit() {
     els.name.focus();
     return;
   }
-  if (!state.pick) {
-    setStatus('Pick a queue and time.', 'error');
+  if (state.pick === null) {
+    setStatus('Pick a time.', 'error');
     return;
   }
 
@@ -281,8 +263,7 @@ async function submit() {
       body: JSON.stringify({
         name,
         type: state.type,
-        queue: state.pick.queue,
-        pick: state.pick.start,
+        pick: state.pick,
       }),
     });
     const data = await r.json();
@@ -291,11 +272,18 @@ async function submit() {
       await loadState();
       return;
     }
-    const picked = state.pick;
+    const b = data.booking;
+    const q = state.queues[b.queue] || {};
+    const who = q.interviewer ? escapeHtml(q.interviewer) : `Queue ${b.queue + 1}`;
+    const zoomUrl = safeUrl(q.zoom);
+    const zoomLink = zoomUrl
+      ? ` · <a href="${escapeHtml(zoomUrl)}" target="_blank" rel="noopener" style="color:var(--accent-2);text-decoration:underline">Zoom</a>`
+      : '';
     state.pick = null;
-    const q = state.queues[picked.queue];
-    const who = q && q.interviewer ? ` with ${q.interviewer}` : '';
-    setStatus(`Booked! ${name} · Queue ${picked.queue + 1}${who} at ${rangeLabel(picked.start, durationCells())}.`, 'success');
+    setStatus(
+      `Booked! ${escapeHtml(name)} — Queue ${b.queue + 1} with ${who} at ${rangeLabel(b.start, b.duration)}${zoomLink}.`,
+      'success'
+    );
     await loadState();
   } catch (e) {
     setStatus('Network error. Please try again.', 'error');

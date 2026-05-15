@@ -182,16 +182,12 @@ function handleApi(req, res, parsed) {
         }
         const name = sanitizeName(body.name);
         const type = body.type;
-        const queue = Number(body.queue);
         let pick;
         if (Number.isFinite(body.pick)) pick = Number(body.pick);
 
         if (!name) return send(res, 400, { error: 'Please enter your name.' });
         if (type !== 'defend' && type !== 'upgrade') {
           return send(res, 400, { error: 'Invalid slot type.' });
-        }
-        if (!Number.isInteger(queue) || queue < 0 || queue >= QUEUES_COUNT) {
-          return send(res, 400, { error: 'Pick a queue.' });
         }
         if (!Number.isInteger(pick)) {
           return send(res, 400, { error: 'Pick a timeslot.' });
@@ -209,22 +205,29 @@ function handleApi(req, res, parsed) {
           (b) => b.name.toLowerCase() === name.toLowerCase()
         );
         if (existing) {
-          const interviewer = data.queues[existing.queue]?.interviewer;
+          const interviewer = data.queues[existing.queue] && data.queues[existing.queue].interviewer;
           const who = interviewer ? ` with ${interviewer}` : '';
           return send(res, 400, {
             error: `${name} already booked queue ${existing.queue + 1}${who} at ${fmtTime((EXAM_START_HOUR * 60) + existing.start * BASE_SLOT_MIN)}. Each student books once.`
           });
         }
 
-        // Cell must be free in this queue
+        // Pick a random queue that has the requested cell range free.
         const grid = queueGrid(data.bookings);
-        for (let i = 0; i < duration; i++) {
-          if (grid[queue][pick + i]) {
-            return send(res, 409, {
-              error: `Queue ${queue + 1} at ${fmtTime((EXAM_START_HOUR * 60) + (pick + i) * BASE_SLOT_MIN)} was just taken — refresh and pick another.`
-            });
+        const freeQueues = [];
+        for (let q = 0; q < QUEUES_COUNT; q++) {
+          let free = true;
+          for (let i = 0; i < duration; i++) {
+            if (grid[q][pick + i]) { free = false; break; }
           }
+          if (free) freeQueues.push(q);
         }
+        if (freeQueues.length === 0) {
+          return send(res, 409, {
+            error: `${fmtTime((EXAM_START_HOUR * 60) + pick * BASE_SLOT_MIN)} is full across all queues — pick another time.`
+          });
+        }
+        const queue = freeQueues[Math.floor(Math.random() * freeQueues.length)];
 
         const now = new Date().toISOString();
         const booking = {
@@ -275,6 +278,45 @@ function handleApi(req, res, parsed) {
     data.bookings = next;
     save(data);
     return send(res, 200, { ok: true });
+  }
+
+  // Move a booking to a different queue (admin only).
+  // Target queue must be free across all of the booking's cells.
+  if (req.method === 'PATCH' && pathname.startsWith('/api/admin/bookings/')) {
+    if (!requireAdmin(req, parsed)) return send(res, 403, { error: 'Forbidden' });
+    const id = pathname.split('/').pop();
+    return readBody(req)
+      .then((raw) => {
+        let body;
+        try {
+          body = JSON.parse(raw || '{}');
+        } catch {
+          return send(res, 400, { error: 'Invalid JSON' });
+        }
+        const newQueue = Number(body.queue);
+        if (!Number.isInteger(newQueue) || newQueue < 0 || newQueue >= QUEUES_COUNT) {
+          return send(res, 400, { error: 'Invalid queue.' });
+        }
+        const data = load();
+        const booking = data.bookings.find((b) => b.id === id);
+        if (!booking) return send(res, 404, { error: 'Not found' });
+        if (booking.queue === newQueue) {
+          return send(res, 200, { ok: true, booking: publicBooking(booking) });
+        }
+        const others = data.bookings.filter((b) => b.id !== id);
+        const grid = queueGrid(others);
+        for (let i = 0; i < booking.duration; i++) {
+          if (grid[newQueue][booking.start + i]) {
+            return send(res, 409, {
+              error: `Queue ${newQueue + 1} is already taken at ${fmtTime((EXAM_START_HOUR * 60) + (booking.start + i) * BASE_SLOT_MIN)}.`
+            });
+          }
+        }
+        booking.queue = newQueue;
+        save(data);
+        return send(res, 200, { ok: true, booking: publicBooking(booking) });
+      })
+      .catch(() => send(res, 400, { error: 'Bad request' }));
   }
 
   if (req.method === 'GET' && pathname === '/api/admin/bookings') {

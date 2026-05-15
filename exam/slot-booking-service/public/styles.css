@@ -295,22 +295,22 @@ body {
   color: var(--accent);
 }
 
-/* --- Queue grid (3 parallel interviewer columns) --- */
-.queue-grid {
+/* --- Queue info row (read-only on student page) --- */
+.hint {
+  margin: 0 0 14px;
+  color: var(--text-dim);
+  font-size: 13px;
+  max-width: 640px;
+}
+.queue-info {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 10px;
 }
 @media (max-width: 720px) {
-  .queue-grid { grid-template-columns: 1fr; }
+  .queue-info { grid-template-columns: 1fr; }
 }
-.queue-col {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-width: 0;
-}
-.queue-head {
+.queue-card {
   padding: 12px 14px;
   background: var(--bg-soft);
   border: 1px solid var(--line-soft);
@@ -318,12 +318,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-.queue-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 8px;
+  min-width: 0;
 }
 .queue-num {
   font-family: var(--font-mono);
@@ -336,6 +331,7 @@ body {
   font-size: 14px;
   font-weight: 600;
   color: var(--text);
+  word-break: break-word;
 }
 .queue-name.tbd { color: var(--text-mute); font-weight: 500; font-style: italic; }
 .queue-zoom {
@@ -363,10 +359,12 @@ body {
   cursor: default;
   pointer-events: none;
 }
-.queue-cells {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+
+/* --- Time picker (queue-agnostic) --- */
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
 }
 .slot {
   position: relative;
@@ -570,7 +568,8 @@ body {
   .hero { padding-top: 48px; }
   .card { padding: 20px; }
   .type-grid { grid-template-columns: 1fr; }
-  .queue-grid { gap: 18px; }
+  .queue-info { gap: 6px; }
+  .time-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
   .sched-row { grid-template-columns: 90px 1fr auto; gap: 10px; padding: 9px 12px; }
   .actions { flex-wrap: wrap; }
 }
