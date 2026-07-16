@@ -8,6 +8,7 @@
   <a href="#syllabus"><img src="https://img.shields.io/badge/lectures-12-blue" alt="lectures"/></a>
   <a href="#assignments"><img src="https://img.shields.io/badge/assignments-7-green" alt="assignments"/></a>
   <a href="#exam"><img src="https://img.shields.io/badge/exam-topics-orange" alt="exam"/></a>
+  <a href="https://ermakov-petr.github.io/VisualGenAI/"><img src="https://img.shields.io/badge/course_website-open-DFFF39" alt="course website"/></a>
   <img src="https://img.shields.io/badge/lectures-EN%20slides%20%2F%20RU%20video-lightgrey" alt="language"/>
 </p>
 
@@ -16,6 +17,8 @@ The main focus is on **diffusion models**: their theoretical interpretations and
 training and sampling methods behind today's high-quality, fast generators. Special attention is
 given to **few-step** diffusion-based models used in production image/video services, and to recent
 advances in **autoregressive** visual generation and its integration with diffusion.
+
+> **[Open the Visual GenAI course website](https://ermakov-petr.github.io/VisualGenAI/)** — the complete syllabus, lecture recordings, assignments, exam topics, and course team in one place.
 
 ## Goals
 

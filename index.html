@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Visual GenAI — курс Школы анализа данных о современных генеративных моделях для изображений, видео и 3D."
+    />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Visual GenAI · ШАД" />
+    <meta
+      property="og:description"
+      content="Diffusion, flow matching, few-step models, visual autoregression, video and 3D."
+    />
+    <meta property="og:image" content="./assets/logo_visual_genai.jpg" />
+    <title>Visual GenAI · ШАД</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Перейти к содержанию</a>
+    <div class="page-progress" aria-hidden="true"><span></span></div>
+
+    <header class="site-header" data-header>
+      <a class="wordmark" href="#top" aria-label="Visual GenAI — наверх">
+        <span>VG</span><i>/</i><span>AI</span>
+      </a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-menu-toggle
+      >
+        <span></span><span></span>
+        <span class="sr-only">Открыть меню</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Основная навигация" data-menu>
+        <a href="#syllabus">Программа</a>
+        <a href="#assignments">Домашние работы</a>
+        <a href="#exam">Экзамен</a>
+        <a href="#team">Команда</a>
+      </nav>
+      <a
+        class="header-link"
+        href="https://github.com/ermakov-petr/VisualGenAI"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-scrim" aria-hidden="true"></div>
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="hero-kicker" data-hero-item>Школа анализа данных · 2026</p>
+          <h1 id="hero-title" data-hero-item>
+            <span>Visual</span>
+            <span>GenAI</span>
+          </h1>
+          <p class="hero-lede" data-hero-item>
+            Современные генеративные модели для изображений, видео и 3D —
+            от диффузии и flow matching до few-step и autoregressive систем.
+          </p>
+          <div class="hero-actions" data-hero-item>
+            <a class="button button-primary" href="#syllabus">
+              Смотреть программу <span aria-hidden="true">↓</span>
+            </a>
+            <a
+              class="button button-ghost"
+              href="https://github.com/ermakov-petr/VisualGenAI"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Материалы на GitHub <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <p class="hero-meta" data-hero-item>
+            <span>12 лекций</span>
+            <span>7 практических заданий</span>
+            <span>EN slides · RU video</span>
+          </p>
+        </div>
+        <a class="hero-scroll" href="#course-intro" aria-label="Листать к описанию курса">
+          <span>scroll</span><i aria-hidden="true"></i>
+        </a>
+      </section>
+
+      <section class="course-intro section-shell" id="course-intro">
+        <div class="section-index" aria-hidden="true">00</div>
+        <div class="intro-copy" data-reveal>
+          <p class="overline">О курсе</p>
+          <h2>
+            Не обзор инструментов, а разбор
+            <em>механики генерации.</em>
+          </h2>
+        </div>
+        <div class="intro-detail" data-reveal>
+          <p>
+            Курс соединяет математические формулировки диффузионных процессов
+            с инженерными решениями, которые стоят за быстрыми
+            image- и video-генераторами.
+          </p>
+          <ul class="plain-list">
+            <li>Вывести и сопоставить DDPM, DSM, SDE/ODE и Flow Matching</li>
+            <li>Реализовать современные solvers и few-step distillation</li>
+            <li>Разобрать visual AR, multimodal conditioning и 3D generation</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="syllabus section-shell" id="syllabus" aria-labelledby="syllabus-title">
+        <div class="section-index" aria-hidden="true">01</div>
+        <header class="section-heading" data-reveal>
+          <div>
+            <p class="overline">12 лекций · полный маршрут</p>
+            <h2 id="syllabus-title">Программа</h2>
+          </div>
+          <p>
+            Англоязычные слайды дополнены записями лекций и семинаров на русском.
+          </p>
+        </header>
+
+        <ol class="timeline" data-timeline>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">01</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Foundations</p>
+              <h3>Introduction to Diffusion Models</h3>
+              <p>DDPM, Denoising Score Matching и две базовые интерпретации диффузии.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы первой лекции">
+              <a href="./week1_ddpm_dsm/ddpm_dsm_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/kkxLSdtAVcVxgw" target="_blank" rel="noopener noreferrer">Lecture</a>
+              <a href="https://disk.yandex.ru/i/D_2_7Wj-ym4QEQ" target="_blank" rel="noopener noreferrer">Seminar</a>
+              <a href="./week1_ddpm_dsm/seminar.ipynb" download>Practice</a>
+              <a href="./week1_ddpm_dsm/seminar_solved.ipynb" download>Solved</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">02</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Foundations</p>
+              <h3>Continuous Diffusion Models</h3>
+              <p>Probability Flow ODE, SDE, Fokker–Planck и непрерывные noise schedules.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы второй лекции">
+              <a href="./week2_continuous_time_diffusion/continuous_time_diffusion_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/YkIe5QbG7CdorA" target="_blank" rel="noopener noreferrer">Lecture</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">03</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Dynamics</p>
+              <h3>Flow Matching</h3>
+              <p>Обучение векторного поля и связь flow matching с диффузионными моделями.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы третьей лекции">
+              <a href="./week3_flow_matching_and_solvers/flow_matching_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/jAJW937u__lmtg" target="_blank" rel="noopener noreferrer">Lecture</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">04</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Dynamics</p>
+              <h3>Efficient PF-ODE / SDE Solvers</h3>
+              <p>Euler, DDIM, DPM-Solver, single-step и multi-step методы.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы четвёртой лекции">
+              <a href="./week3_flow_matching_and_solvers/solvers_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/DeJsKA1M4Qr9Zw" target="_blank" rel="noopener noreferrer">Lecture</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">05</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Practice</p>
+              <h3>Diffusion Models in Practice</h3>
+              <p>Latent spaces, архитектуры, parameterization и production design choices.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы пятой лекции">
+              <a href="./week4_practical_dm/practical_dm_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/rW8GEXnSNN0avQ" target="_blank" rel="noopener noreferrer">Lecture</a>
+              <a href="https://disk.yandex.ru/i/1dVEoOIKN0-4bA" target="_blank" rel="noopener noreferrer">Seminar</a>
+              <a href="./week4_practical_dm/dm_architectures_seminar.pdf">Seminar slides</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">06</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Few-step</p>
+              <h3>Flow Map Models</h3>
+              <p>Consistency Models, MeanFlow и обучаемые интеграторы для быстрого sampling.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы шестой лекции">
+              <a href="./week5_few_step_models_flow_maps/few_step_flow_map_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/ESwQxH5EXe3f5g" target="_blank" rel="noopener noreferrer">Lecture</a>
+              <a href="./week5_few_step_models_flow_maps/flow-map-summary.pdf">Summary</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">07</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Few-step</p>
+              <h3>Distribution Matching</h3>
+              <p>DMD, ADD, SwD и Drifting Models как ODE-free путь к few-step generation.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы седьмой лекции">
+              <a href="./week6_few_step_models_distribution_matching/distribution_matching_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/XGViuRbTRNBeDg" target="_blank" rel="noopener noreferrer">Lecture</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">08</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Autoregression</p>
+              <h3>Autoregressive Visual Generation</h3>
+              <p>VQ-VAE/VQ-GAN, VAR, Switti, MAR и diffusion as autoregression.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы восьмой лекции">
+              <a href="./week7_visual_ar_models/visual_ar_models_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/3dE0XlI793U_DA" target="_blank" rel="noopener noreferrer">Lecture</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">09</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Video · combined block</p>
+              <h3>Video Generation</h3>
+              <p>Video architectures, temporal challenges и autoregressive diffusion.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы девятой лекции">
+              <a href="./week8_video_diffusion_and_efficient_genai/video_generation_and_efficient_genai_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/ITGNF6ukuy1ufQ" target="_blank" rel="noopener noreferrer">Lecture</a>
+              <a href="https://disk.yandex.ru/i/DPQkF553n4rkeg" target="_blank" rel="noopener noreferrer">Seminar</a>
+              <a href="./week8_video_diffusion_and_efficient_genai/autoregression_video_diffusion_seminar.pdf">Seminar slides</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">10</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Efficiency · combined block</p>
+              <h3>Efficient Diffusion Models</h3>
+              <p>Caching, sparse attention, quantization и ускорение моделей на inference.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы десятой лекции">
+              <a href="./week8_video_diffusion_and_efficient_genai/video_generation_and_efficient_genai_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/ITGNF6ukuy1ufQ" target="_blank" rel="noopener noreferrer">Lecture</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">11</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Frontiers</p>
+              <h3>Multimodal Generative Models</h3>
+              <p>Unified architectures, training setups, ControlNet и IP-Adapter conditioning.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы одиннадцатой лекции">
+              <a href="./week9_multimodal_generation_and_conditioning/multimodal_generation_and_conditioning.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/EVl_Y3fF0KL8SA" target="_blank" rel="noopener noreferrer">Lecture</a>
+            </div>
+          </li>
+          <li class="timeline-item" data-reveal>
+            <div class="timeline-number">12</div>
+            <div class="timeline-main">
+              <p class="timeline-phase">Frontiers</p>
+              <h3>3D Generative Models</h3>
+              <p>Основы 3D modeling, score distillation и multi-view diffusion.</p>
+            </div>
+            <div class="material-links" aria-label="Материалы двенадцатой лекции">
+              <a href="./week10_3d_generative_models/3d_generative_models_lecture.pdf">Slides</a>
+              <a href="https://disk.yandex.ru/i/kAUxkOnFmZxJmw" target="_blank" rel="noopener noreferrer">Lecture</a>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="assignments section-shell" id="assignments" aria-labelledby="assignments-title">
+        <div class="section-index" aria-hidden="true">02</div>
+        <header class="section-heading inverse" data-reveal>
+          <div>
+            <p class="overline">7 практических работ</p>
+            <h2 id="assignments-title">От формулы к генератору</h2>
+          </div>
+          <p>
+            Каждая работа продолжает лекционный блок и заканчивается наблюдаемым результатом:
+            изображением, метрикой или видео.
+          </p>
+        </header>
+
+        <ol class="assignment-list">
+          <li data-reveal>
+            <span class="assignment-number">HW 01</span>
+            <div>
+              <p class="assignment-type">Diffusion foundations</p>
+              <h3>DDPM &amp; Denoising Score Matching</h3>
+            </div>
+            <div class="assignment-actions">
+              <a href="./assignments/hw1/task.pdf">Task PDF</a>
+              <a href="./assignments/hw1/practice_template.ipynb" download>Notebook</a>
+              <a href="./downloads/hw1.zip" download>Bundle</a>
+            </div>
+          </li>
+          <li data-reveal>
+            <span class="assignment-number">HW 02</span>
+            <div>
+              <p class="assignment-type">Numerical methods</p>
+              <h3>DPM-Solver &amp; timestep schedules</h3>
+            </div>
+            <div class="assignment-actions">
+              <a href="./assignments/hw2/theory.pdf">Theory PDF</a>
+              <a href="./assignments/hw2/practice_dpm_solver.ipynb" download>Notebook</a>
+              <a href="./downloads/hw2.zip" download>Bundle</a>
+            </div>
+          </li>
+          <li data-reveal>
+            <span class="assignment-number">HW 03</span>
+            <div>
+              <p class="assignment-type">Training</p>
+              <h3>Effective Flow Matching training</h3>
+            </div>
+            <div class="assignment-actions">
+              <a href="./assignments/hw3/fm_training.ipynb" download>Notebook</a>
+              <a href="./downloads/hw3.zip" download>Bundle</a>
+            </div>
+          </li>
+          <li data-reveal>
+            <span class="assignment-number">HW 04</span>
+            <div>
+              <p class="assignment-type">Few-step · flow maps</p>
+              <h3>Consistency Distillation &amp; MeanFlow</h3>
+            </div>
+            <div class="assignment-actions">
+              <a href="./assignments/hw4/flow_map_models.ipynb" download>Notebook</a>
+              <a href="./downloads/hw4.zip" download>Bundle</a>
+            </div>
+          </li>
+          <li data-reveal>
+            <span class="assignment-number">HW 05</span>
+            <div>
+              <p class="assignment-type">Few-step · matching</p>
+              <h3>ADD &amp; MMD distillation</h3>
+            </div>
+            <div class="assignment-actions">
+              <a href="./assignments/hw5/add_mmd_distillation.ipynb" download>Notebook</a>
+              <a href="./downloads/hw5.zip" download>Bundle</a>
+            </div>
+          </li>
+          <li data-reveal>
+            <span class="assignment-number">HW 06</span>
+            <div>
+              <p class="assignment-type">Visual autoregression</p>
+              <h3>MAR with a Flow Matching head</h3>
+            </div>
+            <div class="assignment-actions">
+              <a href="./assignments/hw6/mar_fm_head.ipynb" download>Notebook</a>
+              <a href="./downloads/hw6.zip" download>Bundle</a>
+            </div>
+          </li>
+          <li data-reveal>
+            <span class="assignment-number">HW 07</span>
+            <div>
+              <p class="assignment-type">Video · KV cache</p>
+              <h3>Autoregressive video diffusion sampling</h3>
+            </div>
+            <div class="assignment-actions">
+              <a href="./assignments/hw7/ar_video_diffusion_sampling.ipynb" download>Notebook</a>
+              <a href="./downloads/hw7.zip" download>Bundle</a>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="exam-promo" id="exam" aria-labelledby="exam-title">
+        <div class="exam-orbit" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </div>
+        <div class="exam-content section-shell">
+          <div class="section-index" aria-hidden="true">03</div>
+          <p class="overline" data-reveal>Финальный экзамен</p>
+          <h2 id="exam-title" data-reveal>Восемь блоков.<br />Одна связная картина.</h2>
+          <div class="exam-groups" data-reveal aria-label="Разделы экзамена">
+            <span>Divergences</span>
+            <span>Diffusion formulations</span>
+            <span>Sampling</span>
+            <span>Training design</span>
+            <span>Architectures</span>
+            <span>Few-step</span>
+            <span>Autoregression</span>
+            <span>Video · Multimodal · 3D</span>
+          </div>
+          <a class="button button-dark" href="./exam.html">
+            Открыть все темы <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="team section-shell" id="team" aria-labelledby="team-title">
+        <div class="section-index" aria-hidden="true">04</div>
+        <header class="section-heading" data-reveal>
+          <div>
+            <p class="overline">Course staff</p>
+            <h2 id="team-title">Команда курса</h2>
+          </div>
+          <p>Исследователи и инженеры, работающие с современными generative models.</p>
+        </header>
+
+        <div class="team-layout">
+          <div class="contacts" data-reveal>
+            <p class="overline">Контакты</p>
+            <article>
+              <h3>Dmitry Baranchuk</h3>
+              <p>
+                <a href="mailto:dmitrybaranchuk@gmail.com">Email</a>
+                <a href="https://t.me/vernold" target="_blank" rel="noopener noreferrer">@vernold</a>
+              </p>
+            </article>
+            <article>
+              <h3>Nikita Starodubcev</h3>
+              <p>
+                <a href="mailto:jke013333@gmail.com">Email</a>
+                <a href="https://t.me/nikitastariy" target="_blank" rel="noopener noreferrer">@nikitastariy</a>
+              </p>
+            </article>
+          </div>
+
+          <ul class="people-list" data-reveal>
+            <li>
+              <a href="https://dbaranchuk.github.io/" target="_blank" rel="noopener noreferrer">
+                <span>Dmitry Baranchuk</span><i>↗</i>
+              </a>
+            </li>
+            <li>
+              <a href="https://scholar.google.com/citations?user=o6pRm_gAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+                <span>Nikita Starodubcev</span><i>Scholar ↗</i>
+              </a>
+            </li>
+            <li>
+              <a href="https://scholar.google.com/citations?user=zIl8Z3gAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+                <span>Denis Rakitin</span><i>Scholar ↗</i>
+              </a>
+            </li>
+            <li>
+              <a href="https://scholar.google.com/citations?user=L78B2lcAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+                <span>Denis Kuznedelev</span><i>Scholar ↗</i>
+              </a>
+            </li>
+            <li>
+              <a href="https://scholar.google.com/citations?user=BovM6psAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+                <span>Ilya Drobyshevsky</span><i>Scholar ↗</i>
+              </a>
+            </li>
+            <li>
+              <a href="https://scholar.google.com/citations?user=R4hnjs4AAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+                <span>Ilya Sudakov</span><i>Scholar ↗</i>
+              </a>
+            </li>
+            <li>
+              <a href="https://scholar.google.com/citations?user=765_fJYAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+                <span>Sergey Kastrulin</span><i>Scholar ↗</i>
+              </a>
+            </li>
+            <li>
+              <a href="https://scholar.google.com/citations?user=q69zIO0AAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">
+                <span>Kirill Struminsky</span><i>Scholar ↗</i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="references section-shell" aria-labelledby="references-title">
+        <div class="section-index" aria-hidden="true">05</div>
+        <header class="section-heading compact" data-reveal>
+          <div>
+            <p class="overline">Продолжить изучение</p>
+            <h2 id="references-title">References</h2>
+          </div>
+        </header>
+        <div class="reference-links" data-reveal>
+          <a href="https://deepgenerativemodels.github.io/" target="_blank" rel="noopener noreferrer">
+            <span>01</span>
+            <strong>CS236 · Deep Generative Models</strong>
+            <i>↗</i>
+          </a>
+          <a href="https://the-principles-of-diffusion-models.github.io/" target="_blank" rel="noopener noreferrer">
+            <span>02</span>
+            <strong>The Principles of Diffusion Models</strong>
+            <i>↗</i>
+          </a>
+          <a href="https://the-principles-of-diffusion-models.github.io/#/blog" target="_blank" rel="noopener noreferrer">
+            <span>03</span>
+            <strong>Tracing the Principles · blog</strong>
+            <i>↗</i>
+          </a>
+          <a href="https://bfl.ai/techblog/representation-comparison" target="_blank" rel="noopener noreferrer">
+            <span>04</span>
+            <strong>FLUX.2 · latent spaces and timestep shifts</strong>
+            <i>↗</i>
+          </a>
+          <a href="https://github.com/ermakov-petr/VisualGenAI" target="_blank" rel="noopener noreferrer">
+            <span>05</span>
+            <strong>Visual GenAI · source repository</strong>
+            <i>↗</i>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="wordmark footer-wordmark" href="#top"><span>VG</span><i>/</i><span>AI</span></a>
+      <p>Visual GenAI · Yandex School of Data Analysis · 2026</p>
+      <a href="#top">Наверх ↑</a>
+    </footer>
+  </body>
+</html>

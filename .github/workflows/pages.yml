@@ -1,0 +1,77 @@
+name: Deploy course website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Assemble static site
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          install -d _site/exam _site/downloads
+          install -m 0644 index.html exam.html 404.html styles.css app.js _site/
+          install -m 0644 exam/exam_topics_visual_genai.md _site/exam/
+
+          cp -R assets assignments week* _site/
+
+          for homework_dir in assignments/hw*; do
+            homework_name="$(basename "$homework_dir")"
+            (
+              cd assignments
+              zip -qr "../_site/downloads/${homework_name}.zip" "$homework_name"
+            )
+          done
+
+          touch _site/.nojekyll
+          test -f _site/index.html
+          test -f _site/exam.html
+          test -f _site/downloads/hw7.zip
+
+          if find _site -path '*slot-booking-service*' -print -quit | grep -q .; then
+            echo "Server application leaked into the Pages artifact." >&2
+            exit 1
+          fi
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+          include-hidden-files: true
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

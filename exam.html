@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Полный список экзаменационных тем курса Visual GenAI Школы анализа данных."
+    />
+    <meta name="theme-color" content="#dfff39" />
+    <title>Exam topics · Visual GenAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body class="exam-page">
+    <a class="skip-link" href="#exam-main">Перейти к темам</a>
+    <div class="page-progress" aria-hidden="true"><span></span></div>
+
+    <header class="site-header solid" data-header>
+      <a class="wordmark" href="./index.html" aria-label="Visual GenAI — на главную">
+        <span>VG</span><i>/</i><span>AI</span>
+      </a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        data-menu-toggle
+      >
+        <span></span><span></span>
+        <span class="sr-only">Открыть меню</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Навигация по экзамену" data-menu>
+        <a href="#formulations">Formulations</a>
+        <a href="#sampling">Sampling</a>
+        <a href="#few-step">Few-step</a>
+        <a href="#extensions">Extensions</a>
+      </nav>
+      <a class="header-link" href="./index.html">
+        Главная <span aria-hidden="true">↗</span>
+      </a>
+    </header>
+
+    <main id="exam-main">
+      <section class="exam-hero">
+        <div class="exam-hero-orbit" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="exam-hero-content">
+          <p class="hero-kicker" data-hero-item>Visual GenAI · Final exam</p>
+          <h1 data-hero-item>Exam<br />topics</h1>
+          <p data-hero-item>
+            Полный перечень понятий, формулировок и моделей для подготовки.
+            Ссылки ведут к исходным статьям и дополнительным материалам.
+          </p>
+          <a class="button button-dark" href="#divergences" data-hero-item>
+            Начать подготовку <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+        <p class="exam-count" data-hero-item><strong>08</strong><span>тематических блоков</span></p>
+      </section>
+
+      <div class="exam-layout">
+        <aside class="exam-nav" aria-label="Разделы экзамена">
+          <p>Навигация</p>
+          <ol>
+            <li><a href="#divergences"><span>01</span>Divergences</a></li>
+            <li><a href="#formulations"><span>02</span>Formulations</a></li>
+            <li><a href="#sampling"><span>03</span>Sampling</a></li>
+            <li><a href="#training"><span>04</span>Training</a></li>
+            <li><a href="#architectures"><span>05</span>Architectures</a></li>
+            <li><a href="#few-step"><span>06</span>Few-step</a></li>
+            <li><a href="#autoregression"><span>07</span>Autoregression</a></li>
+            <li><a href="#extensions"><span>08</span>Extensions</a></li>
+          </ol>
+        </aside>
+
+        <div class="exam-sections">
+          <section class="exam-topic" id="divergences" data-reveal>
+            <header>
+              <span>01</span>
+              <div>
+                <p class="overline">Probability</p>
+                <h2>Divergences</h2>
+              </div>
+            </header>
+            <ul class="topic-list">
+              <li>KL divergence and Fisher divergence</li>
+              <li>Forward KL vs Reverse KL: mode-covering and mode-seeking behavior</li>
+            </ul>
+          </section>
+
+          <section class="exam-topic" id="formulations" data-reveal>
+            <header>
+              <span>02</span>
+              <div>
+                <p class="overline">Core theory</p>
+                <h2>Diffusion Model Formulations</h2>
+              </div>
+            </header>
+            <div class="topic-columns">
+              <article>
+                <h3>Discrete-time variational diffusion · DDPM</h3>
+                <ul>
+                  <li>Formulation, training objective and ELBO derivation</li>
+                  <li>Conditional trick and sampling procedure</li>
+                  <li>Variance-preserving schedules</li>
+                  <li>Connection to VAEs</li>
+                </ul>
+              </article>
+              <article>
+                <h3>Discrete-time score-based diffusion · DSM</h3>
+                <ul>
+                  <li>Formulation, training objective and optimal solution</li>
+                  <li>Conditional trick and sampling procedure</li>
+                  <li>Tweedie’s formula and ideal denoiser</li>
+                  <li>Multiple noise levels and variance-exploding schedules</li>
+                </ul>
+              </article>
+              <article>
+                <h3>Continuous-time diffusion · SDE / ODE</h3>
+                <ul>
+                  <li>SDE and ODE formulations</li>
+                  <li>Wiener process and Brownian motion</li>
+                  <li>Fokker–Planck and continuity equations</li>
+                  <li>Continuous-time schedule derivation</li>
+                </ul>
+              </article>
+              <article>
+                <h3>Flow Matching</h3>
+                <ul>
+                  <li>Formulation, objective and optimal solution</li>
+                  <li>Conditional trick and sampling procedure</li>
+                  <li>Linear schedule</li>
+                  <li>Advantages over continuous diffusion formulations</li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="exam-topic" id="sampling" data-reveal>
+            <header>
+              <span>03</span>
+              <div>
+                <p class="overline">Inference</p>
+                <h2>Sampling Methods</h2>
+              </div>
+            </header>
+            <div class="topic-columns three">
+              <article>
+                <h3>Numerical solvers</h3>
+                <ul>
+                  <li>Euler and Heun</li>
+                  <li>
+                    DDIM and
+                    <a href="https://arxiv.org/abs/2206.00927" target="_blank" rel="noopener noreferrer">DPM-Solver ↗</a>
+                  </li>
+                  <li>Single-step vs multi-step / Adams–Bashforth</li>
+                  <li>Connections across diffusion formulations</li>
+                </ul>
+              </article>
+              <article>
+                <h3>Timestep schedules</h3>
+                <ul>
+                  <li>Linear and cosine schedules</li>
+                  <li>EDM and SD3 schedules</li>
+                  <li>Shift selection strategies</li>
+                </ul>
+              </article>
+              <article>
+                <h3>Guidance</h3>
+                <ul>
+                  <li>Classifier guidance</li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2207.12598" target="_blank" rel="noopener noreferrer">Classifier-free guidance ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2404.07724" target="_blank" rel="noopener noreferrer">Interval guidance ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/pdf/2406.02507v1" target="_blank" rel="noopener noreferrer">AutoGuidance ↗</a>
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="exam-topic" id="training" data-reveal>
+            <header>
+              <span>04</span>
+              <div>
+                <p class="overline">Optimization</p>
+                <h2>Training Design Choices</h2>
+              </div>
+            </header>
+            <div class="topic-columns three">
+              <article>
+                <h3>Parameterizations and losses</h3>
+                <ul>
+                  <li>ε-, x₀- and v-prediction</li>
+                  <li>Conversion between parameterizations</li>
+                  <li>Corresponding loss functions</li>
+                  <li>
+                    Table 1 in
+                    <a href="https://arxiv.org/pdf/2511.13720" target="_blank" rel="noopener noreferrer">JiT ↗</a>
+                    for the 1 → 0 process
+                  </li>
+                </ul>
+              </article>
+              <article>
+                <h3>Timestep sampling</h3>
+                <ul>
+                  <li>Uniform and Logit-normal training distributions</li>
+                  <li>Resolution-dependent shift selection</li>
+                </ul>
+              </article>
+              <article>
+                <h3>Representation alignment</h3>
+                <ul>
+                  <li>
+                    <a href="https://arxiv.org/abs/2410.06940" target="_blank" rel="noopener noreferrer">REPA ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2512.10794" target="_blank" rel="noopener noreferrer">iREPA ↗</a>
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="exam-topic" id="architectures" data-reveal>
+            <header>
+              <span>05</span>
+              <div>
+                <p class="overline">Model design</p>
+                <h2>Architectures and Conditioning</h2>
+              </div>
+            </header>
+            <div class="topic-columns three">
+              <article>
+                <h3>Core architectures</h3>
+                <ul>
+                  <li>
+                    UNet /
+                    <a href="https://arxiv.org/abs/2307.01952" target="_blank" rel="noopener noreferrer">SDXL ↗</a>
+                  </li>
+                  <li>
+                    Diffusion Transformers /
+                    <a href="https://arxiv.org/abs/2212.09748" target="_blank" rel="noopener noreferrer">DiT ↗</a>
+                  </li>
+                  <li>
+                    Multimodal DiT /
+                    <a href="https://arxiv.org/abs/2403.03206" target="_blank" rel="noopener noreferrer">MM-DiT ↗</a>
+                  </li>
+                </ul>
+              </article>
+              <article>
+                <h3>Conditioning</h3>
+                <ul>
+                  <li>Timestep, class and text conditioning</li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2302.05543" target="_blank" rel="noopener noreferrer">ControlNet ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2308.06721" target="_blank" rel="noopener noreferrer">IP-Adapter ↗</a>
+                  </li>
+                </ul>
+              </article>
+              <article>
+                <h3>Latent vs pixel space</h3>
+                <ul>
+                  <li>Latent diffusion models</li>
+                  <li>Learnability vs reconstruction quality</li>
+                  <li>
+                    Representation Autoencoders /
+                    <a href="https://arxiv.org/abs/2510.11690" target="_blank" rel="noopener noreferrer">RAE ↗</a>
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="exam-topic" id="few-step" data-reveal>
+            <header>
+              <span>06</span>
+              <div>
+                <p class="overline">Fast generation</p>
+                <h2>Few-step Models</h2>
+              </div>
+            </header>
+            <div class="expectation">
+              <strong>Что понимать</strong>
+              <p>
+                Training и sampling procedures, преимущества и ограничения,
+                scratch vs distillation, связи flow-map подходов и их отличие
+                от distribution matching.
+              </p>
+            </div>
+            <div class="topic-columns">
+              <article>
+                <h3>Flow-map models</h3>
+                <ul>
+                  <li>General formulation and knowledge distillation</li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2303.01469" target="_blank" rel="noopener noreferrer">Consistency Models ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2403.06807" target="_blank" rel="noopener noreferrer">Multi-boundary Consistency ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://openreview.net/forum?id=ymjI8feDTD" target="_blank" rel="noopener noreferrer">Consistency Trajectory Models ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2410.12557" target="_blank" rel="noopener noreferrer">Shortcut models ↗</a>
+                    and
+                    <a href="https://arxiv.org/abs/2505.13447" target="_blank" rel="noopener noreferrer">MeanFlow ↗</a>
+                  </li>
+                </ul>
+              </article>
+              <article>
+                <h3>Distribution matching</h3>
+                <ul>
+                  <li>
+                    <a href="https://arxiv.org/abs/2311.18828" target="_blank" rel="noopener noreferrer">DMD ↗</a>
+                    /
+                    <a href="https://arxiv.org/abs/2405.14867" target="_blank" rel="noopener noreferrer">DMD2 ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2311.17042" target="_blank" rel="noopener noreferrer">ADD ↗</a>
+                    /
+                    <a href="https://arxiv.org/abs/2403.12015" target="_blank" rel="noopener noreferrer">LADD ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/pdf/2503.16397" target="_blank" rel="noopener noreferrer">MMD distillation ↗</a>
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="exam-topic" id="autoregression" data-reveal>
+            <header>
+              <span>07</span>
+              <div>
+                <p class="overline">Sequence modeling</p>
+                <h2>Autoregressive Models</h2>
+              </div>
+            </header>
+            <div class="expectation">
+              <strong>Что понимать</strong>
+              <p>Training и sampling procedures, а также преимущества и ограничения каждого варианта.</p>
+            </div>
+            <div class="topic-columns">
+              <article>
+                <h3>Image tokenizers</h3>
+                <ul>
+                  <li>
+                    <a href="https://arxiv.org/pdf/1711.00937" target="_blank" rel="noopener noreferrer">VQ-VAE ↗</a>
+                    without PixelCNN
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/pdf/2012.09841" target="_blank" rel="noopener noreferrer">VQ-GAN ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2110.04627" target="_blank" rel="noopener noreferrer">ViT-VQ-GAN ↗</a>
+                  </li>
+                </ul>
+              </article>
+              <article>
+                <h3>Prediction paradigms</h3>
+                <ul>
+                  <li>
+                    Next-token /
+                    <a href="https://arxiv.org/abs/2406.06525" target="_blank" rel="noopener noreferrer">LlamaGen ↗</a>
+                  </li>
+                  <li>
+                    Next-scale /
+                    <a href="https://arxiv.org/abs/2404.02905" target="_blank" rel="noopener noreferrer">VAR ↗</a>
+                  </li>
+                  <li>
+                    Continuous-token AR /
+                    <a href="https://arxiv.org/abs/2406.11838" target="_blank" rel="noopener noreferrer">MAR ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://sander.ai/2024/09/02/spectral-autoregression.html" target="_blank" rel="noopener noreferrer">Diffusion as spectral autoregression ↗</a>
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="exam-topic" id="extensions" data-reveal>
+            <header>
+              <span>08</span>
+              <div>
+                <p class="overline">Beyond images</p>
+                <h2>Video, Multimodal and 3D</h2>
+              </div>
+            </header>
+            <div class="expectation">
+              <strong>Что понимать</strong>
+              <p>High-level model designs, ключевые идеи, преимущества и ограничения.</p>
+            </div>
+            <div class="topic-columns three">
+              <article>
+                <h3>Video diffusion</h3>
+                <ul>
+                  <li>Architectural differences from image models</li>
+                  <li>Frame-autoregressive diffusion</li>
+                  <li>
+                    Teacher forcing,
+                    <a href="https://openreview.net/forum?id=yDo1ynArjj" target="_blank" rel="noopener noreferrer">Diffusion forcing ↗</a>
+                    and
+                    <a href="https://arxiv.org/abs/2506.08009" target="_blank" rel="noopener noreferrer">Self forcing ↗</a>
+                  </li>
+                </ul>
+              </article>
+              <article>
+                <h3>Multimodal models</h3>
+                <ul>
+                  <li>
+                    Discrete tokenizer /
+                    <a href="https://arxiv.org/pdf/2501.17811" target="_blank" rel="noopener noreferrer">Janus-Pro ↗</a>
+                  </li>
+                  <li>
+                    Continuous tokenizer /
+                    <a href="https://arxiv.org/abs/2503.13436" target="_blank" rel="noopener noreferrer">UniFluid ↗</a>
+                  </li>
+                  <li>
+                    Unified AR + diffusion /
+                    <a href="https://arxiv.org/abs/2505.14683" target="_blank" rel="noopener noreferrer">Bagel ↗</a>,
+                    <a href="https://arxiv.org/abs/2408.11039" target="_blank" rel="noopener noreferrer">TransFusion ↗</a>
+                  </li>
+                  <li>
+                    VLM encoder + diffusion decoder /
+                    <a href="https://arxiv.org/abs/2508.02324" target="_blank" rel="noopener noreferrer">Qwen-Image ↗</a>
+                  </li>
+                </ul>
+              </article>
+              <article>
+                <h3>3D generative models</h3>
+                <ul>
+                  <li>
+                    <a href="https://arxiv.org/pdf/2209.14988" target="_blank" rel="noopener noreferrer">Score Distillation Sampling ↗</a>
+                  </li>
+                  <li>
+                    <a href="https://arxiv.org/abs/2305.16213" target="_blank" rel="noopener noreferrer">Variational Score Distillation ↗</a>
+                  </li>
+                  <li>
+                    Multi-view diffusion /
+                    <a href="https://arxiv.org/pdf/2503.14489" target="_blank" rel="noopener noreferrer">SEVA ↗</a>
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section class="exam-resources" data-reveal>
+            <p class="overline">Материалы</p>
+            <h2>Полезно при подготовке</h2>
+            <div>
+              <a href="./index.html#syllabus"><span>Программа и слайды</span><i>→</i></a>
+              <a href="https://the-principles-of-diffusion-models.github.io/#/blog" target="_blank" rel="noopener noreferrer">
+                <span>Tracing the Principles Behind Modern Diffusion Models</span><i>↗</i>
+              </a>
+              <a href="https://bfl.ai/techblog/representation-comparison" target="_blank" rel="noopener noreferrer">
+                <span>FLUX.2 · latent spaces and timestep shifts</span><i>↗</i>
+              </a>
+              <a href="./exam/exam_topics_visual_genai.md">
+                <span>Исходный Markdown</span><i>↓</i>
+              </a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <a class="wordmark footer-wordmark" href="./index.html"><span>VG</span><i>/</i><span>AI</span></a>
+      <p>Visual GenAI · Exam topics · 2026</p>
+      <a href="#exam-main">Наверх ↑</a>
+    </footer>
+  </body>
+</html>
